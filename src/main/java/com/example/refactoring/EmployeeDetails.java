@@ -49,6 +49,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.example.commands.CommandManager;
+import com.example.commands.OpenFileCommand;
+import com.example.commands.SaveAsCommand;
+import com.example.commands.SaveFileCommand;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -93,11 +96,13 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private CommandManager commandManager;
 
 	public EmployeeDetails() {
-		// Existing constructor code...
-
 		// Create the CommandManager
 		commandManager = new CommandManager();
 
+		// Register new file commands:
+		commandManager.register("OPEN", new OpenFileCommand(this));
+		commandManager.register("SAVE", new SaveFileCommand(this));
+		commandManager.register("SAVE_AS", new SaveAsCommand(this));
 	}
 
 	// initialize menu bar
@@ -805,6 +810,18 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		searchSurname.setEnabled(search);
 	}// end setEnabled
 
+	public void handleOpenFile() {
+		openFile();
+	}
+
+	public void handleSaveFile() {
+		saveFile();
+	}
+
+	public void handleSaveAsFile() {
+		saveFileAs();
+	}
+
 	// open file
 	private void openFile() {
 		final JFileChooser fc = new JFileChooser();
@@ -994,21 +1011,15 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// action listener for buttons, text field and menu items
 	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
 
-		if (e.getSource() == closeApp) {
-			if (checkInput() && !checkForChanges())
-				exitApp();
-		} else if (e.getSource() == open) {
-			if (checkInput() && !checkForChanges())
-				openFile();
-		} else if (e.getSource() == save) {
-			if (checkInput() && !checkForChanges())
-				saveFile();
-			change = false;
-		} else if (e.getSource() == saveAs) {
-			if (checkInput() && !checkForChanges())
-				saveFileAs();
-			change = false;
+		// Adding commands through command manager to execute specific action
+		if (source == open) {
+			commandManager.runCommand("OPEN");
+		} else if (source == save) {
+			commandManager.runCommand("SAVE");
+		} else if (source == saveAs) {
+			commandManager.runCommand("SAVE_AS");
 		} else if (e.getSource() == searchById) {
 			if (checkInput() && !checkForChanges())
 				displaySearchByIdDialog();
