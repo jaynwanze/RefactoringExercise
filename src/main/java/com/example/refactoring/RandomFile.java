@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import com.example.pojo.Employee;
+
 public class RandomFile {
 	private RandomAccessFile output;
 	private RandomAccessFile input;

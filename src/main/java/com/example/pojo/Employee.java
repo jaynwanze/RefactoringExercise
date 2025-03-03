@@ -1,4 +1,4 @@
-package com.example.refactoring;
+package com.example.pojo;
 /*
  * 
  * This is the definition of the Employee object

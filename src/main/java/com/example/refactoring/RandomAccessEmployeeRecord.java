@@ -6,6 +6,9 @@ package com.example.refactoring;
  * */
 
 import java.io.RandomAccessFile;
+
+import com.example.pojo.Employee;
+
 import java.io.IOException;
 
 public class RandomAccessEmployeeRecord extends Employee

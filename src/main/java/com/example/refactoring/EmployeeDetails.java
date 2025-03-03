@@ -51,10 +51,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.example.commands.CommandManager;
 import com.example.commands.CreateRecordCommand;
 import com.example.commands.DeleteRecordCommand;
+import com.example.commands.FirstRecordCommand;
+import com.example.commands.LastRecordCommand;
+import com.example.commands.ListAllCommand;
 import com.example.commands.ModifyRecordCommand;
+import com.example.commands.NextRecordCommand;
 import com.example.commands.OpenFileCommand;
+import com.example.commands.PreviousRecordCommand;
 import com.example.commands.SaveAsCommand;
 import com.example.commands.SaveFileCommand;
+import com.example.commands.SearchByIdCommand;
+import com.example.commands.SearchBySurnameCommand;
+import com.example.pojo.Employee;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -109,6 +117,13 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		commandManager.register("CREATE_RECORD", new CreateRecordCommand(this));
 		commandManager.register("MODIFY_RECORD", new ModifyRecordCommand(this));
 		commandManager.register("DELETE_RECORD", new DeleteRecordCommand(this));
+		commandManager.register("FIRST", new FirstRecordCommand(this));
+		commandManager.register("LAST", new LastRecordCommand(this));
+		commandManager.register("NEXT", new NextRecordCommand(this));
+		commandManager.register("PREV", new PreviousRecordCommand(this));
+		commandManager.register("SEARCH_BY_ID", new SearchByIdCommand(this));
+		commandManager.register("SEARCH_BY_SURNAME", new SearchBySurnameCommand(this));
+		commandManager.register("LIST_ALL", new ListAllCommand(this));
 
 	}
 
@@ -366,7 +381,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private void displayEmployeeSummaryDialog() {
 		// display Employee summary dialog if these is someone to display
 		if (isSomeoneToDisplay())
-			new EmployeeSummaryDialog(getAllEmloyees());
+			new EmployeeSummaryDialog(getAllEmployees());
 	}// end displaySummaryDialog
 
 	// display search by ID dialog
@@ -602,7 +617,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end deleteDecord
 
 	// create vector of vectors with all Employee details
-	private Vector<Object> getAllEmloyees() {
+	private Vector<Object> getAllEmployees() {
 		// vector of Employee objects
 		Vector<Object> allEmployee = new Vector<Object>();
 		Vector<Object> empDetails;// vector of each employee details
@@ -1017,7 +1032,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 			commandManager.runCommand("SAVE_AS");
 		} else if (source == searchById) {
 			if (checkInput() && !checkForChanges())
-				displaySearchByIdDialog();
+				commandManager.runCommand("SEARCH_BY_ID");
 		} else if (source == searchBySurname) {
 			if (checkInput() && !checkForChanges())
 				displaySearchBySurnameDialog();
@@ -1027,33 +1042,29 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 			searchEmployeeBySurname();
 		else if (source == saveChange) {
 			if (checkInput() && !checkForChanges())
-				;
+				saveChanges(); //implement command
 		} else if (source == cancelChange)
-			cancelChange();
+			cancelChange(); //implement command
 		else if (source == firstItem || source == first) {
 			if (checkInput() && !checkForChanges()) {
-				firstRecord();
-				displayRecords(currentEmployee);
+				commandManager.runCommand("FIRST_RECORD");
 			}
 		} else if (source == prevItem || source == previous) {
 			if (checkInput() && !checkForChanges()) {
-				previousRecord();
-				displayRecords(currentEmployee);
+				commandManager.runCommand("PREVIOUS_RECORD");
 			}
 		} else if (source == nextItem || source == next) {
 			if (checkInput() && !checkForChanges()) {
-				nextRecord();
-				displayRecords(currentEmployee);
+				commandManager.runCommand("NEXT_RECORD");
 			}
 		} else if (source == lastItem || source == last) {
 			if (checkInput() && !checkForChanges()) {
-				lastRecord();
-				displayRecords(currentEmployee);
+				commandManager.runCommand("LAST_RECORD");
 			}
 		} else if (source == listAll || source == displayAll) {
 			if (checkInput() && !checkForChanges())
 				if (isSomeoneToDisplay())
-					displayEmployeeSummaryDialog();
+					commandManager.runCommand("LIST_ALL");
 		} else if (source == create || source == add) {
 			if (checkInput() && !checkForChanges())
 				commandManager.runCommand("CREATE_RECORD");
@@ -1065,7 +1076,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 				commandManager.runCommand("DELETE_RECORD");
 		} else if (source == searchBySurname) {
 			if (checkInput() && !checkForChanges())
-				new SearchBySurnameDialog(EmployeeDetails.this);
+				commandManager.runCommand("SEARCH_BY_SURNAME");
 		}
 	}// end actionPerformed
 
@@ -1092,6 +1103,38 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	public void handleDeleteRecord() {
 		deleteRecord();
+	}
+
+	public void handleFirstRecord() {
+		firstRecord();
+		displayRecords(currentEmployee);
+	}
+
+	public void handleLastRecord() {
+		lastRecord();
+		displayRecords(currentEmployee);
+	}
+
+	public void handleNextRecord() {
+		nextRecord();
+		displayRecords(currentEmployee);
+	}
+
+	public void handlePreviousRecord() {
+		previousRecord();
+		displayRecords(currentEmployee);
+	}
+
+	public void handleSearchById() {
+		displaySearchByIdDialog();
+	}
+
+	public void handleSearchBySurname() {
+		new SearchBySurnameDialog(EmployeeDetails.this);
+	}
+
+	public void handleListAll() {
+		displayEmployeeSummaryDialog();
 	}
 
 	// content pane for main dialog

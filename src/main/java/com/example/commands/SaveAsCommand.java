@@ -14,6 +14,6 @@ public class SaveAsCommand implements Command {
     @Override
     public void execute() {
         //Handle save as file action
-        context.handleSaveFileAs();
+        context.handleSaveAsFile();
     }
 }
