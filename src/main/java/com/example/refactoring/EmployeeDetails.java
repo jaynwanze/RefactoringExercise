@@ -117,10 +117,10 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		commandManager.register("CREATE_RECORD", new CreateRecordCommand(this));
 		commandManager.register("MODIFY_RECORD", new ModifyRecordCommand(this));
 		commandManager.register("DELETE_RECORD", new DeleteRecordCommand(this));
-		commandManager.register("FIRST", new FirstRecordCommand(this));
-		commandManager.register("LAST", new LastRecordCommand(this));
-		commandManager.register("NEXT", new NextRecordCommand(this));
-		commandManager.register("PREV", new PreviousRecordCommand(this));
+		commandManager.register("FIRST_RECORD", new FirstRecordCommand(this));
+		commandManager.register("LAST_RECORD", new LastRecordCommand(this));
+		commandManager.register("NEXT_RECORD", new NextRecordCommand(this));
+		commandManager.register("PREV_RECORD", new PreviousRecordCommand(this));
 		commandManager.register("SEARCH_BY_ID", new SearchByIdCommand(this));
 		commandManager.register("SEARCH_BY_SURNAME", new SearchBySurnameCommand(this));
 		commandManager.register("LIST_ALL", new ListAllCommand(this));
