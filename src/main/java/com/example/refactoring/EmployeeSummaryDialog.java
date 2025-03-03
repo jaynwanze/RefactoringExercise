@@ -24,9 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import com.example.pojo.Employee;
-
 import net.miginfocom.swing.MigLayout;
 
 public class EmployeeSummaryDialog extends JDialog implements ActionListener {
@@ -34,36 +31,41 @@ public class EmployeeSummaryDialog extends JDialog implements ActionListener {
 	Vector<Vector<Object>> allEmployees = new Vector<>();
 	JButton back;
 
-	public EmployeeSummaryDialog(Vector<Object> allEmployees) {
+	public EmployeeSummaryDialog(Vector<Object> employees) {
 		setTitle("Employee Summary");
 		setModal(true);
-
-		// Iterate over the passed vector, assuming each element is an Employee
-		for (Object obj : allEmployees) {
-			Employee emp = (Employee) obj; // cast to Employee
-			Vector<Object> row = new Vector<>();
-			row.add(emp.getEmployeeId());
-			row.add(emp.getPps());
-			row.add(emp.getSurname());
-			row.add(emp.getFirstName());
-			row.add(emp.getGender());
-			row.add(emp.getDepartment());
-			row.add(emp.getSalary());
-			row.add(emp.getFullTime());
-			this.allEmployees.add(row);
+	
+		// Since the passed vector already contains row vectors,
+		// cast it directly to Vector<Vector<Object>>.
+		if (!employees.isEmpty() && employees.get(0) instanceof Vector) {
+			@SuppressWarnings("unchecked")
+			Vector<Vector<Object>> rows = (Vector<Vector<Object>>) (Vector<?>) employees;
+			this.allEmployees = rows;
+		} else {
+			
+			for (Object obj : employees) {
+				com.example.pojo.Employee emp = (com.example.pojo.Employee) obj;
+				Vector<Object> row = new Vector<>();
+				row.add(emp.getEmployeeId());
+				row.add(emp.getPps());
+				row.add(emp.getSurname());
+				row.add(emp.getFirstName());
+				row.add(emp.getGender());
+				row.add(emp.getDepartment());
+				row.add(emp.getSalary());
+				row.add(emp.getFullTime());
+				this.allEmployees.add(row);
+			}
 		}
-
+	
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 		JScrollPane scrollPane = new JScrollPane(summaryPane());
 		setContentPane(scrollPane);
-
 		setSize(850, 500);
 		setLocation(350, 250);
 		setVisible(true);
-
 	}
-
+	
 	// initialise container
 	public Container summaryPane() {
 		JPanel summaryDialog = new JPanel(new MigLayout());
