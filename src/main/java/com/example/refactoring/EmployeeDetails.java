@@ -62,6 +62,8 @@ import com.example.commands.SaveAsCommand;
 import com.example.commands.SaveFileCommand;
 import com.example.commands.SearchByIdCommand;
 import com.example.commands.SearchBySurnameCommand;
+import com.example.commands.SearchIdCommand;
+import com.example.commands.SearchSurnameCommand;
 import com.example.pojo.Employee;
 
 import net.miginfocom.swing.MigLayout;
@@ -124,7 +126,8 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		commandManager.register("SEARCH_BY_ID", new SearchByIdCommand(this));
 		commandManager.register("SEARCH_BY_SURNAME", new SearchBySurnameCommand(this));
 		commandManager.register("LIST_ALL", new ListAllCommand(this));
-
+		commandManager.register("SEARCH_ID", new SearchIdCommand(this));
+		commandManager.register("SEARCH_SURNAME", new SearchSurnameCommand(this));
 	}
 
 	// initialize menu bar
@@ -1024,10 +1027,15 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		Object source = e.getSource();
 
 		// Adding commands through command manager to execute specific action
-		if (source == open) {
-			commandManager.runCommand("OPEN");
+		if (e.getSource() == closeApp) {
+			if (checkInput() && !checkForChanges())
+				exitApp();
+		} else if (source == open) {
+			if (checkInput() && !checkForChanges())
+				commandManager.runCommand("OPEN");
 		} else if (source == save) {
-			commandManager.runCommand("SAVE");
+			if (checkInput() && !checkForChanges())
+				commandManager.runCommand("SAVE");
 		} else if (source == saveAs) {
 			commandManager.runCommand("SAVE_AS");
 		} else if (source == searchById) {
@@ -1035,16 +1043,16 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 				commandManager.runCommand("SEARCH_BY_ID");
 		} else if (source == searchBySurname) {
 			if (checkInput() && !checkForChanges())
-				displaySearchBySurnameDialog();
+				commandManager.runCommand("SEARCH_BY_SURNAME");
 		} else if (source == searchId || source == searchByIdField)
-			searchEmployeeById();
+			commandManager.runCommand("SEARCH_ID");
 		else if (source == searchSurname || source == searchBySurnameField)
-			searchEmployeeBySurname();
+			commandManager.runCommand("SEARCH_SURNAME");
 		else if (source == saveChange) {
 			if (checkInput() && !checkForChanges())
-				saveChanges(); //implement command
+				saveChanges(); // implement command
 		} else if (source == cancelChange)
-			cancelChange(); //implement command
+			cancelChange(); // implement command
 		else if (source == firstItem || source == first) {
 			if (checkInput() && !checkForChanges()) {
 				commandManager.runCommand("FIRST_RECORD");
@@ -1074,9 +1082,6 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		} else if (source == delete || source == deleteButton) {
 			if (checkInput() && !checkForChanges())
 				commandManager.runCommand("DELETE_RECORD");
-		} else if (source == searchBySurname) {
-			if (checkInput() && !checkForChanges())
-				commandManager.runCommand("SEARCH_BY_SURNAME");
 		}
 	}// end actionPerformed
 
@@ -1130,12 +1135,25 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}
 
 	public void handleSearchBySurname() {
-		new SearchBySurnameDialog(EmployeeDetails.this);
+		displaySearchBySurnameDialog();
+	}
+
+	public void handleSearchApp() {
+		searchEmployeeById();
+	}
+
+	public void handleSearchSurname() {
+		searchEmployeeBySurname();
 	}
 
 	public void handleListAll() {
 		displayEmployeeSummaryDialog();
 	}
+
+	
+	// TO:DO
+	// Save changes, cancel changes and close app
+
 
 	// content pane for main dialog
 	private void createContentPane() {
