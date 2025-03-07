@@ -1,4 +1,4 @@
-package com.example.refactoring;
+package com.example.dialogs;
 /*
  * 
  * This is a dialog for adding new Employees and saving records to file
@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.example.pojo.Employee;
+import com.example.utils.JTextFieldLimit;
 
 import net.miginfocom.swing.MigLayout;
 

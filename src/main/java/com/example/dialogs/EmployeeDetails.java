@@ -1,4 +1,4 @@
-package com.example.refactoring;
+package com.example.dialogs;
 
 /* * 
  * This is a menu driven system that will allow users to define a data structure representing a collection of 
@@ -65,6 +65,8 @@ import com.example.commands.SearchBySurnameCommand;
 import com.example.commands.SearchIdCommand;
 import com.example.commands.SearchSurnameCommand;
 import com.example.pojo.Employee;
+import com.example.utils.JTextFieldLimit;
+import com.example.utils.RandomFile;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -75,7 +77,8 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private static final DecimalFormat fieldFormat = new DecimalFormat("0.00");
 	// hold object start position in file
 	private long currentByteStart = 0;
-	private RandomFile application = new RandomFile();
+	//Get instance of RandomFile class
+	private RandomFile application = RandomFile.getInstance();
 	// display files in File Chooser only with extension .dat
 	private FileNameExtensionFilter datfilter = new FileNameExtensionFilter("dat files (*.dat)", "dat");
 	// hold file name and path for current file in use

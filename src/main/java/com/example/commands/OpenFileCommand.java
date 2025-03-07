@@ -1,7 +1,9 @@
 package com.example.commands;
 
-import com.example.refactoring.EmployeeDetails;
 import javax.swing.*;
+
+import com.example.dialogs.EmployeeDetails;
+
 import java.io.File;
 
 // Command to open a file in the context of the EmployeeDetails class

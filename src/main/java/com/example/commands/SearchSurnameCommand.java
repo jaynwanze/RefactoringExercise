@@ -1,6 +1,6 @@
 package com.example.commands;
 
-import com.example.refactoring.EmployeeDetails;
+import com.example.dialogs.EmployeeDetails;
 
 public class SearchSurnameCommand implements Command {
     private EmployeeDetails context;

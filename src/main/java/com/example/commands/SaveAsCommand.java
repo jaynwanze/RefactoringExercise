@@ -1,6 +1,6 @@
 package com.example.commands;
 
-import com.example.refactoring.EmployeeDetails;
+import com.example.dialogs.EmployeeDetails;
 
 // Command to save as file in the context of the EmployeeDetails class
 public class SaveAsCommand implements Command {

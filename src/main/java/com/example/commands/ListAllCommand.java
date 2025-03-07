@@ -1,6 +1,6 @@
 package com.example.commands;
 
-import com.example.refactoring.EmployeeDetails;
+import com.example.dialogs.EmployeeDetails;
 
 // e.g. ListAll
 public class ListAllCommand implements Command {

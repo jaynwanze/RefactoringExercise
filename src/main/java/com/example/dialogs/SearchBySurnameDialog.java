@@ -1,11 +1,10 @@
-package com.example.refactoring;
+package com.example.dialogs;
 /*
  * 
- * This is the dialog for Employee search by ID
+ * This is a dialog for searching Employees by their surname.
  * 
  * */
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,23 +15,22 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
 import com.example.commands.CommandManager;
+import com.example.utils.JTextFieldLimit;
 
-
-public class SearchByIdDialog extends JDialog implements ActionListener {
+public class SearchBySurnameDialog extends JDialog implements ActionListener{
 	EmployeeDetails parent;
 	JButton search, cancel;
 	JTextField searchField;
 	CommandManager commandManager;
 
-	// constructor for SearchByIdDialog
-	public SearchByIdDialog(EmployeeDetails parent, CommandManager commandManager) {
+	// constructor for search by surname dialog
+	public SearchBySurnameDialog(EmployeeDetails parent, CommandManager commandManager) {
 		setTitle("Search by Surname");
 		setModal(true);
 		this.parent = parent;
@@ -44,23 +42,23 @@ public class SearchByIdDialog extends JDialog implements ActionListener {
 		setContentPane(scrollPane);
 
 		getRootPane().setDefaultButton(search);
-
+		
 		setSize(500, 190);
 		setLocation(350, 250);
 		setVisible(true);
-	}// end SearchByIdDialog
-
+	}// end SearchBySurnameDialog
+	
 	// initialize search container
 	public Container searchPane() {
-		JPanel searchPanel = new JPanel(new GridLayout(3, 1));
+		JPanel searchPanel = new JPanel(new GridLayout(3,1));
 		JPanel textPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		JLabel searchLabel;
 
-		searchPanel.add(new JLabel("Search by ID"));
-
+		searchPanel.add(new JLabel("Search by Surname"));
+	
 		textPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		textPanel.add(searchLabel = new JLabel("Enter ID:"));
+		textPanel.add(searchLabel = new JLabel("Enter Surname:"));
 		searchLabel.setFont(this.parent.font1);
 		textPanel.add(searchField = new JTextField(20));
 		searchField.setFont(this.parent.font1);
@@ -69,10 +67,10 @@ public class SearchByIdDialog extends JDialog implements ActionListener {
 		buttonPanel.add(search = new JButton("Search"));
 		search.addActionListener(this);
 		search.requestFocus();
-
+		
 		buttonPanel.add(cancel = new JButton("Cancel"));
 		cancel.addActionListener(this);
-
+		
 		searchPanel.add(textPanel);
 		searchPanel.add(buttonPanel);
 
@@ -82,23 +80,14 @@ public class SearchByIdDialog extends JDialog implements ActionListener {
 	// action listener for save and cancel button
 	public void actionPerformed(ActionEvent e) {
 		// if option search, search for Employee
-		if (e.getSource() == search) {
-			// try get correct valus from text field
-			try {
-				Double.parseDouble(searchField.getText());
-				this.parent.searchByIdField.setText(searchField.getText());
-				// search Employee by ID
-				commandManager.runCommand("SEARCH_ID");
-				dispose();// dispose dialog
-			} // end try
-			catch (NumberFormatException num) {
-				// display message and set colour to text field if entry is wrong
-				searchField.setBackground(new Color(255, 150, 150));
-				JOptionPane.showMessageDialog(null, "Wrong ID format!");
-			} // end catch
-		} // end if
-			// else dispose dialog
-		else if (e.getSource() == cancel)
-			dispose();
+		if(e.getSource() == search){
+			this.parent.searchBySurnameField.setText(searchField.getText());
+			// search Employee by surname
+			commandManager.runCommand("SEARCH_SURNAME");
+			dispose();// dispose dialog
+		}// end if
+		// else dispose dialog
+		else if(e.getSource() == cancel)
+			dispose();// dispose dialog
 	}// end actionPerformed
-}// end class searchByIdDialog
+}// end class SearchBySurnameDialog

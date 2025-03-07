@@ -1,4 +1,4 @@
-package com.example.refactoring;
+package com.example.dialogs;
 /*
  * 
  * This is the summary dialog for displaying all Employee details

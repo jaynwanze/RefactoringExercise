@@ -1,6 +1,6 @@
 package com.example.commands;
 
-import com.example.refactoring.EmployeeDetails;
+import com.example.dialogs.EmployeeDetails;
 
 // CreateRecordCommand is a class that implements the Command interface.
 public class CreateRecordCommand implements Command {

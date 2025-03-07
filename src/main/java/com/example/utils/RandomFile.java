@@ -1,4 +1,4 @@
-package com.example.refactoring;
+package com.example.utils;
 /*
  * 
  * This class is for accessing, creating and modifying records in a file
@@ -17,6 +17,22 @@ import com.example.pojo.Employee;
 public class RandomFile {
 	private RandomAccessFile output;
 	private RandomAccessFile input;
+
+	  // Singleton instance
+	  private static RandomFile instance;
+
+	  // Private constructor to prevent instantiation from outside
+	  private RandomFile() {
+	  }
+  
+	  // Public method to provide access to the singleton instance
+	  public static synchronized RandomFile getInstance() {
+		  if (instance == null) {
+			  instance = new RandomFile();
+		  }
+		  return instance;
+	  }
+  
 
 	// Create new file
 	public void createFile(String fileName) {
