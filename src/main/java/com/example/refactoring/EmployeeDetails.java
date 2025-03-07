@@ -390,13 +390,13 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	// display search by ID dialog
 	private void displaySearchByIdDialog() {
 		if (isSomeoneToDisplay())
-			new SearchByIdDialog(EmployeeDetails.this);
+			new SearchByIdDialog(EmployeeDetails.this, this.commandManager);
 	}// end displaySearchByIdDialog
 
 	// display search by surname dialog
 	private void displaySearchBySurnameDialog() {
 		if (isSomeoneToDisplay())
-			new SearchBySurnameDialog(EmployeeDetails.this);
+			new SearchBySurnameDialog(EmployeeDetails.this, this.commandManager);
 	}// end displaySearchBySurnameDialog
 
 	// find byte start in file for first active record
@@ -476,7 +476,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end lastRecord
 
 	// search Employee by ID
-	public void searchEmployeeById() {
+	private void searchEmployeeById() {
 		boolean found = false;
 
 		try {// try to read correct correct from input
@@ -521,7 +521,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end searchEmployeeByID
 
 	// search Employee by surname
-	public void searchEmployeeBySurname() {
+	private void searchEmployeeBySurname() {
 		boolean found = false;
 		// if any active Employee record search for ID else do nothing
 		if (isSomeoneToDisplay()) {
@@ -1138,7 +1138,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		displaySearchBySurnameDialog();
 	}
 
-	public void handleSearchApp() {
+	public void handleSearchId() {
 		searchEmployeeById();
 	}
 

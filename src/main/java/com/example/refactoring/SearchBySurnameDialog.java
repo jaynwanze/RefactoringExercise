@@ -20,15 +20,21 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+import com.example.commands.CommandManager;
+
 public class SearchBySurnameDialog extends JDialog implements ActionListener{
 	EmployeeDetails parent;
 	JButton search, cancel;
 	JTextField searchField;
+	CommandManager commandManager;
+
 	// constructor for search by surname dialog
-	public SearchBySurnameDialog(EmployeeDetails parent) {
+	public SearchBySurnameDialog(EmployeeDetails parent, CommandManager commandManager) {
 		setTitle("Search by Surname");
 		setModal(true);
 		this.parent = parent;
+		// instasiate command manager
+		this.commandManager = commandManager;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JScrollPane scrollPane = new JScrollPane(searchPane());
@@ -76,7 +82,7 @@ public class SearchBySurnameDialog extends JDialog implements ActionListener{
 		if(e.getSource() == search){
 			this.parent.searchBySurnameField.setText(searchField.getText());
 			// search Employee by surname
-			this.parent.searchEmployeeBySurname();
+			commandManager.runCommand("SEARCH_SURNAME");
 			dispose();// dispose dialog
 		}// end if
 		// else dispose dialog

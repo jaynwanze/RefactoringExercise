@@ -22,27 +22,34 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
+import com.example.commands.CommandManager;
+
+
 public class SearchByIdDialog extends JDialog implements ActionListener {
 	EmployeeDetails parent;
 	JButton search, cancel;
 	JTextField searchField;
-	// constructor for SearchByIdDialog 
-	public SearchByIdDialog(EmployeeDetails parent) {
+	CommandManager commandManager;
+
+	// constructor for SearchByIdDialog
+	public SearchByIdDialog(EmployeeDetails parent, CommandManager commandManager) {
 		setTitle("Search by Surname");
 		setModal(true);
 		this.parent = parent;
+		// instasiate command manager
+		this.commandManager = commandManager;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JScrollPane scrollPane = new JScrollPane(searchPane());
 		setContentPane(scrollPane);
 
 		getRootPane().setDefaultButton(search);
-		
+
 		setSize(500, 190);
 		setLocation(350, 250);
 		setVisible(true);
 	}// end SearchByIdDialog
-	
+
 	// initialize search container
 	public Container searchPane() {
 		JPanel searchPanel = new JPanel(new GridLayout(3, 1));
@@ -58,11 +65,11 @@ public class SearchByIdDialog extends JDialog implements ActionListener {
 		textPanel.add(searchField = new JTextField(20));
 		searchField.setFont(this.parent.font1);
 		searchField.setDocument(new JTextFieldLimit(20));
-		
+
 		buttonPanel.add(search = new JButton("Search"));
 		search.addActionListener(this);
 		search.requestFocus();
-		
+
 		buttonPanel.add(cancel = new JButton("Cancel"));
 		cancel.addActionListener(this);
 
@@ -81,16 +88,16 @@ public class SearchByIdDialog extends JDialog implements ActionListener {
 				Double.parseDouble(searchField.getText());
 				this.parent.searchByIdField.setText(searchField.getText());
 				// search Employee by ID
-				this.parent.searchEmployeeById();
+				commandManager.runCommand("SEARCH_ID");
 				dispose();// dispose dialog
-			}// end try
+			} // end try
 			catch (NumberFormatException num) {
 				// display message and set colour to text field if entry is wrong
 				searchField.setBackground(new Color(255, 150, 150));
 				JOptionPane.showMessageDialog(null, "Wrong ID format!");
-			}// end catch
-		}// end if
-		// else dispose dialog
+			} // end catch
+		} // end if
+			// else dispose dialog
 		else if (e.getSource() == cancel)
 			dispose();
 	}// end actionPerformed
