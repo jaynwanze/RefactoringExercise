@@ -48,22 +48,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.example.commands.CommandManager;
-import com.example.commands.CreateRecordCommand;
-import com.example.commands.DeleteRecordCommand;
-import com.example.commands.FirstRecordCommand;
-import com.example.commands.LastRecordCommand;
-import com.example.commands.ListAllCommand;
-import com.example.commands.ModifyRecordCommand;
-import com.example.commands.NextRecordCommand;
-import com.example.commands.OpenFileCommand;
-import com.example.commands.PreviousRecordCommand;
-import com.example.commands.SaveAsCommand;
-import com.example.commands.SaveFileCommand;
-import com.example.commands.SearchByIdCommand;
-import com.example.commands.SearchBySurnameCommand;
-import com.example.commands.SearchIdCommand;
-import com.example.commands.SearchSurnameCommand;
+import com.example.commands.*;
 import com.example.pojo.Employee;
 import com.example.utils.JTextFieldLimit;
 import com.example.utils.RandomFile;
@@ -77,7 +62,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	private static final DecimalFormat fieldFormat = new DecimalFormat("0.00");
 	// hold object start position in file
 	private long currentByteStart = 0;
-	//Get instance of RandomFile class
+	// Get instance of RandomFile class
 	private RandomFile application = RandomFile.getInstance();
 	// display files in File Chooser only with extension .dat
 	private FileNameExtensionFilter datfilter = new FileNameExtensionFilter("dat files (*.dat)", "dat");
@@ -131,6 +116,9 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		commandManager.register("LIST_ALL", new ListAllCommand(this));
 		commandManager.register("SEARCH_ID", new SearchIdCommand(this));
 		commandManager.register("SEARCH_SURNAME", new SearchSurnameCommand(this));
+		commandManager.register("CLOSE_APP", new CloseAppCommand(this));
+		commandManager.register("SAVE_CHANGE", new SaveChangesCommand(this));
+		commandManager.register("CANCEL_CHANGE", new CancelChangesCommand(this));
 	}
 
 	// initialize menu bar
@@ -1032,7 +1020,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		// Adding commands through command manager to execute specific action
 		if (e.getSource() == closeApp) {
 			if (checkInput() && !checkForChanges())
-				exitApp();
+				commandManager.runCommand("CLOSE_APP");
 		} else if (source == open) {
 			if (checkInput() && !checkForChanges())
 				commandManager.runCommand("OPEN");
@@ -1053,9 +1041,9 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 			commandManager.runCommand("SEARCH_SURNAME");
 		else if (source == saveChange) {
 			if (checkInput() && !checkForChanges())
-				saveChanges(); // implement command
+				commandManager.runCommand("SAVE_CHANGE");
 		} else if (source == cancelChange)
-			cancelChange(); // implement command
+			commandManager.runCommand("CANCEL_CHANGE");
 		else if (source == firstItem || source == first) {
 			if (checkInput() && !checkForChanges()) {
 				commandManager.runCommand("FIRST_RECORD");
@@ -1153,10 +1141,17 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		displayEmployeeSummaryDialog();
 	}
 
-	
-	// TO:DO
-	// Save changes, cancel changes and close app
+	public void handleSaveChange() {
+		saveChanges();
+	}
 
+	public void handleCancelChange() {
+		cancelChange();
+	}
+
+	public void handleCloseApp() {
+		exitApp();
+	}
 
 	// content pane for main dialog
 	private void createContentPane() {
